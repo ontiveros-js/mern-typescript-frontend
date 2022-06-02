@@ -1,15 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "bootswatch/dist/minty/bootstrap.min.css";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Context from "./context/Context";
+import VideoList from "./components/VideoList";
+import Form from "./components/Form";
+import Nav from "./components/Nav";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Nav />
+      <Context>
+        <div className="container pt-4">
+          <Routes>
+            <Route path="/" element={<VideoList />} />
+            <Route path="/form" element={<Form />} />
+          </Routes>
+        </div>
+      </Context>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
