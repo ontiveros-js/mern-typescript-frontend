@@ -53,7 +53,9 @@ const Context = ({ children }: Ichildren) => {
   const [inputsValue, setInputsValue] = useState<Iuser>(inputsDefault);
 
   const fetching = async () => {
-    const datos = await axios("http://localhost:3001/videos");
+    const datos = await axios(
+      "https://mern-typescript-doug.herokuapp.com/videos"
+    );
     setData(datos.data);
   };
 

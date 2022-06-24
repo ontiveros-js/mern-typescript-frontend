@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContexto } from "../Hook/useContexto";
+import { toast } from "react-toastify";
 
 const Form = () => {
-  const [errorInputT, setErrorInputT] = useState("");
-  const [errorInputU, setErrorInputU] = useState("");
-
   let navigate = useNavigate();
   const { setInputsValue, inputsValue, fetching } = useContexto();
 
@@ -24,8 +22,9 @@ const Form = () => {
     if (inputsValue._id) {
       try {
         const { title, description, url } = inputsValue;
-        const a = await axios.put(
-          "http://localhost:3001/videos/" + inputsValue._id,
+        const update = await axios.put(
+          "https://mern-typescript-doug.herokuapp.com/videos/" +
+            inputsValue._id,
           {
             title,
             description,
@@ -33,13 +32,35 @@ const Form = () => {
           }
         );
 
-        console.log(a.data === {});
+        if (update.data.keyValue) {
+          if (update.data.keyValue.title)
+            return toast.error(
+              update.data.keyValue.title + " ya existe como titulo",
+              { autoClose: 2000 }
+            );
+          if (update.data.keyValue.url)
+            return toast.error(
+              update.data.keyValue.url + " ya existe como URL",
+              { autoClose: 2000 }
+            );
+        }
       } catch (error) {
-        console.log("error.request");
+        console.log(error);
       }
     } else {
-      await axios.post("http://localhost:3001/videos", inputsValue);
+      try {
+        const create = await axios.post(
+          "https://mern-typescript-doug.herokuapp.com/videos",
+          inputsValue
+        );
+
+        if (create.status === 202)
+          return toast.error(create.data, { autoClose: 2000 });
+      } catch (error) {
+        console.log(error);
+      }
     }
+
     setInputsValue({
       title: "",
       description: "",
@@ -47,31 +68,6 @@ const Form = () => {
     });
     fetching();
     navigate("/");
-  };
-
-  const onBlur = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    if (e.target.value === "") return;
-
-    if (e.target.name === "title") {
-      const verification = await axios(
-        "http://localhost:3001/title/" + e.target.value
-      );
-      if (verification.data !== "continue") setErrorInputT(verification.data);
-      else setErrorInputT("");
-    }
-
-    if (e.target.name === "url") {
-      const verification = await axios(
-        "http://localhost:3001/url/" + e.target.value
-      );
-      if (verification.data !== "continue") setErrorInputU(verification.data);
-      else setErrorInputU("");
-    }
-  };
-
-  const onfocus = (e: React.FocusEvent<HTMLInputElement, Element>) => {
-    if (e.target.name === "title") setErrorInputT("");
-    if (e.target.name === "url") setErrorInputU("");
   };
 
   return (
@@ -90,12 +86,9 @@ const Form = () => {
             aria-describedby="emailHelp"
             value={inputsValue.title}
             onChange={onChange}
-            onBlur={onBlur}
-            onFocus={onfocus}
             required
             autoFocus
           />
-          <small>{errorInputT}</small>
         </div>
         <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">
@@ -108,11 +101,8 @@ const Form = () => {
             name="url"
             value={inputsValue.url}
             onChange={onChange}
-            onBlur={onBlur}
-            onFocus={onfocus}
             required
           />
-          <small>{errorInputU}</small>
         </div>
         <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">
@@ -126,11 +116,7 @@ const Form = () => {
             onChange={onChange}
           />
         </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={errorInputT || errorInputU ? true : false}
-        >
+        <button type="submit" className="btn btn-primary">
           Guardar
         </button>
       </form>

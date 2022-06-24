@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootswatch/dist/minty/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -24,6 +26,7 @@ root.render(
           </Routes>
         </div>
       </Context>
+      <ToastContainer />
     </BrowserRouter>
   </React.StrictMode>
 );

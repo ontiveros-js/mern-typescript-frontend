@@ -37,12 +37,16 @@ const VideoCard = ({ video }: Props) => {
   const navigate = useNavigate();
 
   const deleteVideo = async () => {
-    await axios.delete("http://localhost:3001/videos/" + video._id);
+    await axios.delete(
+      "https://mern-typescript-doug.herokuapp.com/videos/" + video._id
+    );
     fetching();
   };
 
   const updateVideo = async () => {
-    const oneVideo = await axios("http://localhost:3001/videos/" + video._id);
+    const oneVideo = await axios(
+      "https://mern-typescript-doug.herokuapp.com/videos/" + video._id
+    );
     const { title, description, url, _id } = oneVideo.data;
     setInputsValue({ title, description, url, _id });
     navigate("/form");
