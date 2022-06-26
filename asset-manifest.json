@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/mern-typescript-frontend/static/css/main.af4ffa8c.css",
-    "main.js": "/mern-typescript-frontend/static/js/main.b43b926d.js",
+    "main.js": "/mern-typescript-frontend/static/js/main.e74b4091.js",
     "static/js/27.07bc2567.chunk.js": "/mern-typescript-frontend/static/js/27.07bc2567.chunk.js",
     "index.html": "/mern-typescript-frontend/index.html"
   },
   "entrypoints": [
     "static/css/main.af4ffa8c.css",
-    "static/js/main.b43b926d.js"
+    "static/js/main.e74b4091.js"
   ]
 }
